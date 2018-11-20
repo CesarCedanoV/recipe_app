@@ -41,6 +41,37 @@ const renderRecipe = recipe => {
   elements.searchResultsList.insertAdjacentHTML('beforeend', markup);
 };
 
-export const renderResults = recipes => {
-  recipes.forEach(renderRecipe)
+// direction: 'prev' or 'next'
+const createPaginationButton = (page, direction) => `
+<button class="btn-inline results__btn--${direction}" data-goto=${direction === 'prev' ? page - 1 : page +1}>
+  <svg class="search__icon">
+      <use href="img/icons.svg#icon-triangle-${direction === 'prev' ? 'left' : 'right'}"></use>
+  </svg>
+  <span>Page ${direction === 'prev' ? page - 1 : page +1}</span>
+</button>`;
+
+const renderPaginationButtons = (currentPage, numItems, itemPerPage) => {
+  const pages = Math.ceil(numItems / itemPerPage);
+  let button;
+  if (currentPage === 1 && pages > 1){
+    button = createPaginationButton(currentPage,'next');
+  }else if( page < pages ) {
+    button = `
+      ${createPaginationButton(currentPage,'next')}
+      ${createPaginationButton(currentPage,'prevt')}
+    `;
+  }else if( currentPage === pages && pages > 1) {
+    button = createPaginationButton(currentPage,'prev');
+  }
+  
+  elements.searchResultsPages.insertAdjacentHTML('afterbegin', button);
+};
+
+export const renderResults = (recipes, itemPerPage = 10, page = 1) => {
+  const start = (page - 1) * itemPerPage
+  const end = page * itemPerPage;
+
+  recipes.slice(start, end).forEach(renderRecipe);
+
+  renderPaginationButtons(page,recipes.length, itemPerPage);
 };
