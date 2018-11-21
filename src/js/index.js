@@ -14,10 +14,17 @@ const controlSearch = async () => {
     searchView.clearResultsList();
     renderLoader(elements.searchResults);
 
-    await state.search.getResults();
+    try {
+      await state.search.getResults();
+      
+      clearLoader();
+      searchView.renderResults(state.search.results);
+    } catch (err) {
+      alert("Can't load the recipes!")
+      clearLoader();
+    }
 
-    clearLoader();
-    searchView.renderResults(state.search.results);
+    
   }
 
 }
@@ -25,4 +32,13 @@ const controlSearch = async () => {
 elements.searchForm.addEventListener('submit', e => {
     e.preventDefault();
     controlSearch();
+  });
+
+  elements.searchResultsPages.addEventListener('click', e => {
+    const btn = e.target.closest('.btn-inline');
+    if (btn) {
+      const goToPage = parseInt(btn.dataset.goto);
+      searchView.clearResultsList();
+      searchView.renderResults(state.search.results, 10,goToPage);
+    }
   });

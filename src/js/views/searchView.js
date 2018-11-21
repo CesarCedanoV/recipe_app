@@ -8,6 +8,7 @@ export const clearInputValue = () => {
 
 export const clearResultsList = () => {
   elements.searchResultsList.innerHTML = '';
+  elements.searchResultsPages.innerHTML = '';
 };
 
 const limitRecipeTitle = (title, limit = 17) => {
@@ -44,10 +45,10 @@ const renderRecipe = recipe => {
 // direction: 'prev' or 'next'
 const createPaginationButton = (page, direction) => `
 <button class="btn-inline results__btn--${direction}" data-goto=${direction === 'prev' ? page - 1 : page +1}>
+  <span>Page ${direction === 'prev' ? page - 1 : page +1}</span>
   <svg class="search__icon">
       <use href="img/icons.svg#icon-triangle-${direction === 'prev' ? 'left' : 'right'}"></use>
-  </svg>
-  <span>Page ${direction === 'prev' ? page - 1 : page +1}</span>
+  </svg
 </button>`;
 
 const renderPaginationButtons = (currentPage, numItems, itemPerPage) => {
@@ -55,10 +56,10 @@ const renderPaginationButtons = (currentPage, numItems, itemPerPage) => {
   let button;
   if (currentPage === 1 && pages > 1){
     button = createPaginationButton(currentPage,'next');
-  }else if( page < pages ) {
+  }else if( currentPage < pages ) {
     button = `
       ${createPaginationButton(currentPage,'next')}
-      ${createPaginationButton(currentPage,'prevt')}
+      ${createPaginationButton(currentPage,'prev')}
     `;
   }else if( currentPage === pages && pages > 1) {
     button = createPaginationButton(currentPage,'prev');
