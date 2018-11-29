@@ -82,7 +82,6 @@ const controlList = () => {
   if (!state.list) state.list = new List();
 
   state.recipe.ingredients.forEach(el => {
-    console.log(el);
     const item = state.list.addItem(el.count, el.unit, el.ingredient);
     listView.renderItem(item);
   });
@@ -97,8 +96,7 @@ elements.recipe.addEventListener('click', e => {
   } else if (e.target.matches('.btn-increase, .btn-increase *') ) {
     state.recipe.updateServings('inc');
     recipeView.updateServingsIngredients(state.recipe);
-  } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')){
-    console.log('Pase por aqui');
+  } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {  
     controlList();
   }
 });
