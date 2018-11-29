@@ -7,6 +7,7 @@ import * as listView from './views/listView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
 const state = {};
+window.state = state;
 
 const controlSearch = async () => {
   const query = searchView.getInputValue();
@@ -86,6 +87,21 @@ const controlList = () => {
     listView.renderItem(item);
   });
 }
+
+elements.shopping.addEventListener('click',e => {
+  const id  = e.target.closest('.shopping__item').dataset.itemid;
+
+  if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+
+    state.list.deleteItem(id);
+
+    listView.deleteItem(id);
+    
+  } else if (e.target.matches('.shopping__count-value')) {
+    const val = parseFloat(e.target.value,10)
+    state.list.updateCount(id, val);
+  }
+});
 
 elements.recipe.addEventListener('click', e => {
   if (e.target.matches('.btn-decrease, .btn-decrease *') ) {
