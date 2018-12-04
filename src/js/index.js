@@ -108,6 +108,8 @@ elements.shopping.addEventListener('click',e => {
   }
 });
 state.likes = new Likes();
+likesView.toggleLikeMenu(state.likes.getNumLikes());
+
 const controlLike = () => {
   if (!state.likes) state.likes = new Likes();
   const currentID = state.recipe.id;
@@ -121,14 +123,16 @@ const controlLike = () => {
     );
 
     likesView.toggleLikeBtn(true);
+    
+    likesView.renderLike(newLike);
 
-    console.log(state.likes);
   } else {
     state.likes.deleteLike(currentID);
 
     likesView.toggleLikeBtn(false);
     
-    console.log(state.likes);
+    likesView.deleteLike(currentID);
+    
   }
   likesView.toggleLikeMenu(state.likes.getNumLikes());
 }
