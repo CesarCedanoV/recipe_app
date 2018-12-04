@@ -9,7 +9,6 @@ import * as likesView from './views/likesView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
 const state = {};
-window.state = state;
 
 const controlSearch = async () => {
   const query = searchView.getInputValue();
@@ -52,7 +51,6 @@ elements.searchResultsPages.addEventListener('click', e => {
 
 const controlRecipe = async () => {
   const id = window.location.hash.replace('#','');
-  console.log(id);
 
   if (id){
     recipeView.clearRecipe();
@@ -76,7 +74,6 @@ const controlRecipe = async () => {
         );
 
     }catch (err){
-      console.log(err);
       alert('Error processing Recipe');
     }
   } 
@@ -107,8 +104,6 @@ elements.shopping.addEventListener('click',e => {
     state.list.updateCount(id, val);
   }
 });
-state.likes = new Likes();
-likesView.toggleLikeMenu(state.likes.getNumLikes());
 
 const controlLike = () => {
   if (!state.likes) state.likes = new Likes();
@@ -155,4 +150,10 @@ elements.recipe.addEventListener('click', e => {
 
 
 
-window.l = new List();
+
+window.addEventListener('load', () => {
+  state.likes = new Likes();
+  state.likes.readStorage();
+  likesView.toggleLikeMenu(state.likes.getNumLikes());
+  state.likes.likes.forEach(like =>  likesView.renderLike(like));
+});
